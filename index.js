@@ -117,6 +117,7 @@ Object.defineProperty(ScienceBook, "setInfo", {
     this.info = newInfo;
   }, // Далі створюємо сетер який присвоє властивості info значення яке отримує при виклику, помилку більше не отримуємо але при спробі вивести значення info отримуємо undefined
 });
+
 // Створимо гетер який буде нам повертати рядок: Про книгу <title>: <info>
 Object.defineProperty(ScienceBook, "getInfo", {
   get() {
@@ -141,6 +142,7 @@ console.log(ScienceBook.info);
 // Виводимо в консоль налаштування властивости info
 const propertyDescriptor = Object.getOwnPropertyDescriptor(ScienceBook, "info");
 console.log(propertyDescriptor);
+
 // 5. Поліморфізм: створення нового об'єкта та перевизначення його методу
 /*
  * Об'єкт: Textbook
@@ -150,18 +152,24 @@ console.log(propertyDescriptor);
  */
 
 //Створюємо Textbook та наслідуємо властивості з ScienceBook
-
+const TextBook = Object.create(ScienceBook);
 // Перевизначаємо метод read(), відповідно з дописом вище
-
+TextBook.read = function () {
+  console.log(
+    `Ви читаєте підручник "${this.title}" від ${this.author}. ${this.info}`
+  );
+};
 // Встановлюємо значення для Textbook
 // | Властивість | Значення                   |
 // |-------------|----------------------------|
 // | title       | "Фізика у Вищій Школі"     |
 // | author      | "Дж. Д. Джонс"             |
+TextBook.title = "Фізика у Вищій Школі";
+TextBook.author = "Дж. Д. Джонс";
 
 console.log("Завдання: 5 ==============================");
 // Викликаємо функцію read об'єкту Textbook
-
+TextBook.read();
 // 6. Абстракція: створення об'єкта з загальними властивостями
 /*
  * Об'єкт: Media

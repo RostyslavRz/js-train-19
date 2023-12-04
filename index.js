@@ -53,7 +53,7 @@ Book.read();
 const Novel = Object.create(Book);
 
 // Додаємо властивість genre
-Novel.henre = "Новела";
+Novel.genre = "Новела";
 
 console.log("Завдання: 2 ==============================");
 
@@ -100,28 +100,21 @@ console.log(Novel.isPrototypeOf(Biografy));
  */
 
 // Створюємо ScienceBook, наслідуємо властивості і функції від об'єкта Book
-const ScienceBook = Object.create(Book);
+let ScienceBook = Object.create(Book);
 // Додаємо властивість 'info' за допомогою Object.defineProperty
 Object.defineProperty(ScienceBook, "info", {
-  value: "написана в 1915 році",
-  writable: false,
-  enumerable: false,
   configurable: false,
-});
-// Зробимо щоб 'info' не можно було видалити або змінити, перевіримо і спробуємо присвоїти ій будь яке значення (це потрібно робити ззовні defineProperty),
-// ScienceBook.info = "anonim";
-// console.log(ScienceBook.info);
-// Отримаємо помилку Cannot assign to read only property 'info' of object '#<Object>'
-Object.defineProperty(ScienceBook, "setInfo", {
-  set(newInfo) {
-    this.info = newInfo;
-  }, // Далі створюємо сетер який присвоє властивості info значення яке отримує при виклику, помилку більше не отримуємо але при спробі вивести значення info отримуємо undefined
-});
-
-// Створимо гетер який буде нам повертати рядок: Про книгу <title>: <info>
-Object.defineProperty(ScienceBook, "getInfo", {
+  // Зробимо щоб 'info' не можно було видалити або змінити, перевіримо і спробуємо присвоїти ій будь яке значення (це потрібно робити ззовні defineProperty),
+  // ScienceBook.info = "anonim";
+  // console.log(ScienceBook.info);
+  // Отримаємо помилку Cannot assign to read only property 'info' of object '#<Object>'
+  set(value) {
+    this._info = value;
+  },
+  // Далі створюємо сетер який присвоє властивості info значення яке отримує при виклику, помилку більше не отримуємо але при спробі вивести значення info отримуємо undefined
+  // Створимо гетер який буде нам повертати рядок: Про книгу <title>: <info>
   get() {
-    retutn`Про книгу ${this.title}: ${this.info}`;
+    return `Про книгу ${this.title}: ${this._info}`;
   },
 });
 
@@ -135,13 +128,13 @@ Object.defineProperty(ScienceBook, "getInfo", {
 // | info        | написана в 1915 році |
 ScienceBook.title = "Фізика 101";
 ScienceBook.author = "Альберт Ейнштейн";
+ScienceBook.info = "написана в 1915 році";
 
 console.log("Завдання: 4 ==============================");
 // Виводимо в консоль властивість info
 console.log(ScienceBook.info);
 // Виводимо в консоль налаштування властивости info
-const propertyDescriptor = Object.getOwnPropertyDescriptor(ScienceBook, "info");
-console.log(propertyDescriptor);
+console.log(Object.getOwnPropertyDescriptor(ScienceBook, "info"));
 
 // 5. Поліморфізм: створення нового об'єкта та перевизначення його методу
 /*
